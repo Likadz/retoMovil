@@ -88,6 +88,8 @@ class HomePage extends StatelessWidget {
           if(snapshot.hasData){//si hay datos
             
             return ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
               padding: EdgeInsets.all(8),
               itemCount: snapshot.data.length,//el tamaño del json (elementos)
               itemBuilder: (BuildContext context, int index){
