@@ -5,10 +5,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:lista_usuarios/models/candidatos.dart';
-import 'package:lista_usuarios/models/rutaUsuario.dart';
 
 class ListadoUsuarios{
-  final String apiUrl = "http://localhost:8080/rutaUsuario/getAllByRutaId/5fe1af96be240f162762eac7";
+  final String apiUrl = "https://randomuser.me/api/?results=10&nat=ES";
 
   Future<List<dynamic>> fetchUsers() async {
 
@@ -29,7 +28,7 @@ class ListadoUsuarios{
         print(snapshot);
         if(snapshot.hasData){//si hay datos
           for(int i = 0; i<10;i++){
-            usuarios[i]=RutaUsuario(snapshot.data[i]['id'], snapshot.data[i]['usuario_id'], snapshot.data[i]['ruta_id'], snapshot.data[i]['puntuacion']);//creamos el candidato*/
+            usuarios[i]=Candidato(i, snapshot.data[i]['name']['first'], CircleAvatar(radius: 30,backgroundImage: NetworkImage(snapshot.data[i]['picture']['large'])));//creamos el candidato*/
           }
           print(usuarios);
           return null;

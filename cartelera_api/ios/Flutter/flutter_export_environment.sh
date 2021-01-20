@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
 export "FLUTTER_ROOT=C:\sdkFlutter\flutter"
-export "FLUTTER_APPLICATION_PATH=D:\Leire\RetoFebreroApi\retoMovil\cartelera"
+export "FLUTTER_APPLICATION_PATH=D:\Leire\RetoFebreroApi\retoMovil\cartelera_api"
 export "FLUTTER_TARGET=lib\main.dart"
 export "FLUTTER_BUILD_DIR=build"
 export "SYMROOT=${SOURCE_ROOT}/../build\ios"

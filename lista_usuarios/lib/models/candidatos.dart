@@ -6,7 +6,7 @@ class Candidato{
   int id;
   String nombre;
   int votos=0;
-  //CircleAvatar foto;
+  CircleAvatar foto;
   
-  Candidato(this.id, this.nombre);
+  Candidato(this.id, this.nombre, this.foto);
 }

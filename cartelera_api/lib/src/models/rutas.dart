@@ -3,6 +3,7 @@ class Rutas {
   List<Ruta> items = new List();
 
   Rutas();
+  
 
   Rutas.fromJsonList( List<dynamic> jsonList  ) {
 
@@ -27,7 +28,7 @@ class Ruta {
   String imagen;
   int dificultad;
 
-  Ruta({
+  Ruta(String string, {
     this.id,
     this.nombre,
     this.ciudad,

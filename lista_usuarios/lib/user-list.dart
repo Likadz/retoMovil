@@ -8,23 +8,23 @@ import 'package:lista_usuarios/models/rutaUsuario.dart';
 
 class UserList extends StatelessWidget{
 
-  final String apiUrl = "http://10.0.2.2:8080/rutas/getAll";
+  final String apiUrl = "http://10.0.2.2:8080/rutaUsuario/getAllByRutaId/5fe08c5fcb547a43a444398c";
 
   Future<List<dynamic>> fetchUsers() async {
-
+    print("a por los datos");
     var result = await http.get(apiUrl);//pide los datos
-    return json.decode(result.body)['results'];//devuelve el json a partir del results
-
+     if (result.statusCode == 200){
+      var responseJson = json.decode(result.body);
+      return responseJson;
+    } else {
+      return null;
+    }
+ 
   }
 
-  //atributo nombre, le pasamos el elemento del json que toque y accedemos a los parametros del nombre
-  String _name(dynamic user){
-    return user['id'];
-
-  }
 
   void cogerUsuarios(){
-    print("metodo recogida de usuarios");
+    print("metodo recogida de RANKING");
    
     var usuarios =[];
 
@@ -38,10 +38,11 @@ class UserList extends StatelessWidget{
 
           List<dynamic> ld;
           for(int i = 0; i<10;i++){
-            usuarios[i]=RutaUsuario(snapshot.data[i]['id'], snapshot.data[i]['usuario_id'], snapshot.data[i]['ruta_id'], snapshot.data[i]['puntuacion']);//creamos el candidato*/
+            usuarios[i]=RutaUsuario(i, snapshot.data[i]['puntuacion']);//creamos el candidato*/
+
             ld.add(usuarios[i]);
           }
-          print(usuarios);
+          print('Usuarios ' + usuarios.toString());
           
         }
       }
@@ -53,64 +54,100 @@ class UserList extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    var usuarios=[];
-    int _voto=0;
     return Scaffold(
       appBar: AppBar(
-        title: Text('RANKING'),
+        title: Text('EL RANKING '),
       ),
-      body: Container(
-        child: FutureBuilder<List<dynamic>>(
-          future: fetchUsers(),//recoge los datos
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if(snapshot.hasData){//si hay datos
-              
-              return ListView.builder(
-                padding: EdgeInsets.all(8),
-                itemCount: snapshot.data.length,//el tamaño del json (elementos)
-                itemBuilder: (BuildContext context, int index){
-                  usuarios.add(
-                    new RutaUsuario(
-                      index.toString(),
-                      _name(snapshot.data[index]), 
-                      _name(snapshot.data[index]), 
-                      1000, 
-                     // CircleAvatar(radius: 30,backgroundImage: NetworkImage(snapshot.data[index]['picture']['large']))
-                    )
-                  );
-                  return Container(
-                    height: 50.0,
-                    child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    
-                    children: [
-                      //foto de avatar
-                      Text(_name(snapshot.data[index])),//pasamos a la funcion del nombre el elemento 
-                      Row(
-                        children: [
-                          Text('0'),
-                          IconButton(
-                            icon: Icon(Icons.favorite),
-                            tooltip: 'vota al usuario',
-                            onPressed: () {
-                              _voto+=1;
-                              print(_voto);
-                            },
+      body: 
+      Stack(children: 
+      [
+        //boton de volver 
+        Positioned(
+              top: 5,
+              left: 5,
+              child: Container(
+                child: Ink(
+                  decoration: const ShapeDecoration(
+                    color: Colors.black,
+                    shape: CircleBorder(),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back_ios),
+                    color: Colors.white,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+            
+            ),
+          ),
+          //ranking
+          Align(
+              child: Column(
+                children: [
+                  Container(//titulo
+                    decoration: 
+                      new BoxDecoration(
+                        color: Color.fromRGBO(136,212,152,1),
+                        boxShadow: 
+                        [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),  
+                            spreadRadius: 5,
+                            blurRadius: 5,
+                            offset: Offset(0, 4), // changes position of shadow
                           ),
                         ],
-                      )
-                    ],
-                  ));
+                      ),
+                    width: 310,
+                    height: 100,
+                    child: Center(
+                      child:
+                      Text(
+                      'RANKING',
+                      style: 
+                      GoogleFonts.pressStart2p(
+                        fontStyle: FontStyle.italic, 
+                        fontSize: 40, 
+                        foreground: Paint()..style = PaintingStyle.stroke..strokeWidth = 3..color = Color.fromRGBO(243,233,210,1), 
+                      ),
+                      ),
+                    )
+                  ),
+                ],
+              ),
+          
+            ),
+      
+          Container(
+            margin: const EdgeInsets.only(top: 200.0),
+            child: FutureBuilder<List<dynamic>>(
+              future: fetchUsers(),//recoge los datos
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                
+                if(snapshot.hasData){//si hay datos
                   
-                  });
-            }else {
-              return Center(child: CircularProgressIndicator());
-            }
-          },
-
-
-        ),
-      ),
+                  return ListView.builder(
+                    padding: EdgeInsets.all(8),
+                    itemCount: snapshot.data.length,//el tamaño del json (elementos)
+                    itemBuilder: (BuildContext context, int index){
+                    
+                      return Container(
+                        child: Center(
+                          child:
+                          Text((index+1).toString()+"º " + snapshot.data[index]['id'].toString() + " " + snapshot.data[index]['puntuacion'].toString(),style: GoogleFonts.pressStart2p(fontStyle: FontStyle.italic, fontSize: 25, color: Color.fromRGBO(136,212,152,1))),
+                        
+                      ));
+                      
+                      });
+                }else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
+          ),
+      ],)
     );
   }
 

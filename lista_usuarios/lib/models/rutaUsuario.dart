@@ -1,6 +1,6 @@
 
 class RutaUsuario{
-  String id;
+  int id;
   String idRuta;
   String idUsuario;
 
@@ -8,5 +8,5 @@ class RutaUsuario{
   bool activo=false;
   //CircleAvatar foto;
   
-  RutaUsuario(this.id, this.idRuta, this.idUsuario, this.puntos);
+  RutaUsuario(this.id, this.puntos);
 }

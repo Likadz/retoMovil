@@ -6,14 +6,18 @@ import 'package:peliculas/src/models/rutas.dart';
 
 class CardSwiper extends StatelessWidget {
   
-  final List<Ruta> Rutas;
-  
-  CardSwiper({ @required this.Rutas });
+  final List<dynamic> rutas;
+ 
+  CardSwiper({ @required this.rutas });
 
   
   @override
   Widget build(BuildContext context) {
-    
+    var i=0;
+    for(Ruta ruta in rutas){
+      print(ruta);
+      i++;
+    }
     final _screenSize = MediaQuery.of(context).size;
 
     return Container(
@@ -24,14 +28,14 @@ class CardSwiper extends StatelessWidget {
           itemHeight: _screenSize.height * 0.5,
           itemBuilder: (BuildContext context, int index){
 
-            Rutas[index].id = '${ Rutas[index].id }-tarjeta';
+            rutas[index].id = '${ rutas[index].id }-tarjeta';
 
             return Hero(
-              tag: Rutas[index].id,
+              tag: rutas[index].id,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20.0),
                 child: GestureDetector(
-                  onTap: ()=> Navigator.pushNamed(context, 'detalle', arguments: Rutas[index]),
+                  onTap: ()=> Navigator.pushNamed(context, 'detalle', arguments: rutas[index]),
                   child: FadeInImage(
                     image: NetworkImage( '../resources/imagen.jpg'  ),
                     placeholder: AssetImage('assets/img/no-image.jpg'),
@@ -42,7 +46,7 @@ class CardSwiper extends StatelessWidget {
             );
             
           },
-          itemCount: Rutas.length,
+          itemCount: i,
           // pagination: new SwiperPagination(),
           // control: new SwiperControl(),
       ),
