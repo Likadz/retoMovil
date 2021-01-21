@@ -17,11 +17,9 @@ class HomePage extends StatelessWidget {
   final String apiUrl = "http://10.0.2.2:8080/rutas/getAll";
 
   Future<List<dynamic>> fetchRutas() async {
-    print("a por las rutas");
     var result = await http.get(apiUrl);//pide los datos
     if (result.statusCode == 200){
       var responseJson = json.decode(result.body);
-      print("TODAS LAS RUTAS " + responseJson.toString());
       return responseJson;
     } else {
       return null;
@@ -31,31 +29,25 @@ class HomePage extends StatelessWidget {
 
  
   void cogerRutas(){
-    print("metodo recogida de rutas");
-   
-    var usuarios =[];
+    var rutas =[];
 
     FutureBuilder<List<dynamic>>(
       future: fetchRutas(),//recoge los datos
       // ignore: missing_return
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        print("snapshot $snapshot");
-
         if(snapshot.hasData){//si hay datos
 
           List<dynamic> ld;
           for(int i = 0; i<10;i++){
-            usuarios[i]=Ruta(i.toString());//creamos el candidato*/
+            rutas[i]=Ruta(i.toString());//creamos el candidato*/
 
-            ld.add(usuarios[i]);
+            ld.add(rutas[i]);
           }
-          print('Usuarios ' + usuarios.toString());
           
         }
       }
     );
     //return usuarios;
-    print(usuarios.length);
   }
 
   //final rutasProvider = new RutasProvider();
@@ -80,83 +72,31 @@ class HomePage extends StatelessWidget {
 
   Widget _swiperTarjetas(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 100.0),
+      margin: const EdgeInsets.only(top: 30.0),
       child: FutureBuilder<List<dynamic>>(
         future: fetchRutas(),//recoge los datos
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           
           if(snapshot.hasData){//si hay datos
+            List<dynamic> listaRuta = snapshot.data;
+            return CardSwiper( rutas: listaRuta );
             
-            return ListView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              padding: EdgeInsets.all(8),
-              itemCount: snapshot.data.length,//el tamaño del json (elementos)
-              itemBuilder: (BuildContext context, int index){
-              
-                return Container(
-                  child: Center(
-                    child:
-                    Text(snapshot.data[index]['id'].toString() + " " + snapshot.data[index]['nombre'].toString(),style: GoogleFonts.pressStart2p(fontStyle: FontStyle.italic, fontSize: 25, color: Color.fromRGBO(136,212,152,1))),
-                  
-                  ));
-                
-                });
           }else {
             return Center(child: CircularProgressIndicator());
           }
         },
       ),
     );
-   /* RutasProvider.getRutas().then((response) {
-      lista = response;
-      
-      print("LISTA USUARIOS " + lista.toString());
-    });
-    return CardSwiper( rutas: lista );
-  */
-    /*
-    var listadoRutas;
-    RutasProvider.getRutas().then((response) {
-      print('Respuesta rutas ' + response.toString());
-      listadoRutas=response;
-    
-      print("Listado de rutas " + listadoRutas.toString());
-      
-      return CardSwiper( Rutas: listadoRutas );
-        
-    });*/
-
-
-    /*return FutureBuilder(
-      future: rutasProvider.getRutas(),
-      builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
-        
-        if ( snapshot.hasData ) {
-          return CardSwiper( Rutas: snapshot.data );
-        } else {
-          return Container(
-            height: 400.0,
-            child: Center(
-              child: CircularProgressIndicator()
-            )
-          );
-        }
-        
-      },
-    );*/
   }
 
 
   Widget _footer(BuildContext context){
-
     return Container(
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Center(
-            //padding: EdgeInsets.only(left: 20.0),
             child: 
               RaisedButton(
                 onPressed: () {
@@ -185,12 +125,9 @@ class HomePage extends StatelessWidget {
                 ),
               ),
           ),
-
         ],
       ),
     );
-
-
   }
 
   //selector de filtro ciudad

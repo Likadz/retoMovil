@@ -13,13 +13,12 @@ class CardSwiper extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    var i=0;
-    for(Ruta ruta in rutas){
-      print(ruta);
-      i++;
-    }
+    
     final _screenSize = MediaQuery.of(context).size;
-
+    int i=0;
+    for(var r in rutas){
+      i+=1;
+    }
     return Container(
        padding: EdgeInsets.only(top: 10.0),
        child: Swiper(
@@ -28,16 +27,16 @@ class CardSwiper extends StatelessWidget {
           itemHeight: _screenSize.height * 0.5,
           itemBuilder: (BuildContext context, int index){
 
-            rutas[index].id = '${ rutas[index].id }-tarjeta';
+            rutas[index]['id'] = '${ rutas[index]['id']  }-tarjeta';
 
             return Hero(
-              tag: rutas[index].id,
+              tag: rutas[index]['id'],
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20.0),
                 child: GestureDetector(
                   onTap: ()=> Navigator.pushNamed(context, 'detalle', arguments: rutas[index]),
                   child: FadeInImage(
-                    image: NetworkImage( '../resources/imagen.jpg'  ),
+                    image: AssetImage('assets/img/$index.jpg'),
                     placeholder: AssetImage('assets/img/no-image.jpg'),
                     fit: BoxFit.cover,
                   ),
@@ -46,7 +45,7 @@ class CardSwiper extends StatelessWidget {
             );
             
           },
-          itemCount: i,
+          itemCount:i,
           // pagination: new SwiperPagination(),
           // control: new SwiperControl(),
       ),

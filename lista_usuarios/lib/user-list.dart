@@ -106,12 +106,12 @@ class UserList extends StatelessWidget{
                       child:
                       Text(
                       'RANKING',
-                      style: 
+                      /*style: 
                       GoogleFonts.pressStart2p(
                         fontStyle: FontStyle.italic, 
                         fontSize: 40, 
                         foreground: Paint()..style = PaintingStyle.stroke..strokeWidth = 3..color = Color.fromRGBO(243,233,210,1), 
-                      ),
+                      ),*/
                       ),
                     )
                   ),
@@ -136,7 +136,7 @@ class UserList extends StatelessWidget{
                       return Container(
                         child: Center(
                           child:
-                          Text((index+1).toString()+"º " + snapshot.data[index]['id'].toString() + " " + snapshot.data[index]['puntuacion'].toString(),style: GoogleFonts.pressStart2p(fontStyle: FontStyle.italic, fontSize: 25, color: Color.fromRGBO(136,212,152,1))),
+                          Text((index+1).toString()+"º " + snapshot.data[index]['id'].toString() + " " + snapshot.data[index]['puntuacion'].toString(),)//style: GoogleFonts.pressStart2p(fontStyle: FontStyle.italic, fontSize: 25, color: Color.fromRGBO(136,212,152,1))),
                         
                       ));
                       
